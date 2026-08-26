@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morale — Account</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app">
+
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <span>Morale</span>
+      </div>
+
+      <a href="settings.html" class="profile-button">
+        <span class="profile-avatar">M</span>
+      </a>
+    </header>
+
+    <main class="dashboard">
+
+      <section class="welcome">
+        <p>Welcome back</p>
+        <h1 id="accountName">Michael</h1>
+      </section>
+
+      <section class="balance-card">
+        <div class="balance-header">
+          <span>Available balance</span>
+
+          <button
+            id="toggleBalance"
+            class="icon-btn"
+            type="button"
+            aria-label="Hide balance"
+          >
+            ◉
+          </button>
+        </div>
+
+        <div class="balance" id="balanceDisplay">
+          $3,000,000.00
+        </div>
+
+        <div class="balance-footer">
+          <select id="currencySelect" aria-label="Select currency">
+            <option value="USD">USD</option>
+            <option value="GBP">GBP</option>
+            <option value="EUR">EUR</option>
+            <option value="NGN">NGN</option>
+            <option value="BRL">BRL</option>
+            <option value="CAD">CAD</option>
+            <option value="AUD">AUD</option>
+            <option value="CHF">CHF</option>
+            <option value="JPY">JPY</option>
+            <option value="ZAR">ZAR</option>
+          </select>
+
+          <span class="account-label">Personal account</span>
+        </div>
+      </section>
+
+      <section class="quick-actions">
+        <button type="button" class="action-card" id="editBalanceButton">
+          <span class="action-icon">＋</span>
+          <strong>Edit balance</strong>
+          <small>Change displayed balance</small>
+        </button>
+
+        <button type="button" class="action-card" id="supportButton">
+          <span class="action-icon">?</span>
+          <strong>Customer service</strong>
+          <small>Get help</small>
+        </button>
+      </section>
+
+      <section class="account-section">
+        <div class="section-heading">
+          <h2>Account</h2>
+          <span>•••• 2048</span>
+        </div>
+
+        <div class="account-row">
+          <div>
+            <span class="row-label">Account holder</span>
+            <strong id="accountHolder">Michael</strong>
+          </div>
+        </div>
+
+        <div class="account-row">
+          <div>
+            <span class="row-label">Currency</span>
+            <strong id="accountCurrency">USD</strong>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <nav class="bottom-nav">
+      <a href="dashboard.html" class="nav-item active">
+        <span>⌂</span>
+        <small>Account</small>
+      </a>
+
+      <a href="settings.html" class="nav-item">
+        <span>⚙</span>
+        <small>Settings</small>
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- Balance editor -->
+  <div class="modal" id="balanceModal">
+    <div class="modal-card">
+      <button class="close-modal" id="closeBalanceModal" type="button">×</button>
+
+      <h2>Edit balance</h2>
+      <p>Enter the amount to display.</p>
+
+      <input
+        type="number"
+        id="balanceInput"
+        min="0"
+        step="0.01"
+        placeholder="3000000"
+      >
+
+      <button type="button" class="primary-btn" id="saveBalance">
+        Save
+      </button>
+    </div>
+  </div>
+
+  <!-- Customer service -->
+  <div class="support-panel" id="supportPanel">
+
+    <div class="support-header">
+      <div>
+        <strong>Customer service</strong>
+        <small>We're here to help</small>
+      </div>
+
+      <button id="closeSupport" type="button">×</button>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="message received">
+        Hi, how can we help you?
+      </div>
+    </div>
+
+    <form class="chat-form" id="chatForm">
+      <input
+        type="text"
+        id="chatInput"
+        placeholder="Write a message..."
+        autocomplete="off"
+      >
+      <button type="submit">Send</button>
+    </form>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
