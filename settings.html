@@ -6,88 +6,97 @@
   <title>Morale — Settings</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
   <div class="app">
-
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand-mark">M</div>
-        <span>Morale</span>
-      </div>
-    </header>
-
-    <main class="settings-page">
-
-      <section class="settings-profile">
-        <div class="large-avatar" id="settingsAvatar">M</div>
-
-        <h1 id="settingsName">Michael</h1>
-        <p>Personal account</p>
-      </section>
-
-      <section class="settings-card">
-
-        <div class="settings-row">
-          <div>
-            <strong>Profile name</strong>
-            <small id="profileNameText">Michael</small>
-          </div>
-
-          <button type="button" class="settings-action" id="editName">
-            Edit
-          </button>
-        </div>
-
-        <div class="settings-row">
-          <div>
-            <strong>Account currency</strong>
-            <small id="settingsCurrency">USD</small>
-          </div>
-
-          <select id="settingsCurrencySelect">
-            <option value="USD">USD — US Dollar</option>
-            <option value="GBP">GBP — British Pound</option>
-            <option value="EUR">EUR — Euro</option>
-            <option value="NGN">NGN — Nigerian Naira</option>
-            <option value="BRL">BRL — Brazilian Real</option>
-            <option value="CAD">CAD — Canadian Dollar</option>
-            <option value="AUD">AUD — Australian Dollar</option>
-            <option value="CHF">CHF — Swiss Franc</option>
-            <option value="JPY">JPY — Japanese Yen</option>
-            <option value="ZAR">ZAR — South African Rand</option>
-          </select>
-        </div>
-
-        <div class="settings-row">
-          <div>
-            <strong>Appearance</strong>
-            <small id="themeLabel">Light mode</small>
-          </div>
-
-          <button type="button" class="theme-toggle" id="themeToggle">
-            <span></span>
-          </button>
-        </div>
-
-      </section>
-
-    </main>
-
-    <nav class="bottom-nav">
-      <a href="dashboard.html" class="nav-item">
-        <span>⌂</span>
-        <small>Account</small>
-      </a>
-
-      <a href="settings.html" class="nav-item active">
-        <span>⚙</span>
-        <small>Settings</small>
-      </a>
-    </nav>
-
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">M</div>
+    <span>Morale</span>
   </div>
-
+  <a
+    href="dashboard.html"
+    class="profile-button"
+    aria-label="Go to account"
+  >
+    <span class="profile-avatar" id="settingsTopAvatar">M</span>
+  </a>
+</header>
+<main class="settings-page">
+  <section class="settings-profile">
+    <div class="large-avatar" id="settingsAvatar">M</div>
+    <h1 id="settingsName">Michael</h1>
+    <p>Personal account</p>
+  </section>
+  <section class="settings-card">
+    <div class="settings-row">
+      <div>
+        <strong>Profile name</strong>
+        <small id="profileNameText">Michael</small>
+      </div>
+      <button
+        type="button"
+        class="settings-action"
+        id="editName"
+      >
+        Edit
+      </button>
+    </div>
+    <div class="settings-row">
+      <div>
+        <strong>Account currency</strong>
+        <small id="settingsCurrency">🇺🇸 USD</small>
+      </div>
+      <select
+        id="settingsCurrencySelect"
+        aria-label="Select account currency"
+      >
+        <option value="USD">🇺🇸 USD — US Dollar</option>
+        <option value="GBP">🇬🇧 GBP — British Pound</option>
+        <option value="EUR">🇪🇺 EUR — Euro</option>
+        <option value="NGN">🇳🇬 NGN — Nigerian Naira</option>
+        <option value="BRL">🇧🇷 BRL — Brazilian Real</option>
+        <option value="CAD">🇨🇦 CAD — Canadian Dollar</option>
+        <option value="AUD">🇦🇺 AUD — Australian Dollar</option>
+        <option value="CHF">🇨🇭 CHF — Swiss Franc</option>
+        <option value="JPY">🇯🇵 JPY — Japanese Yen</option>
+        <option value="ZAR">🇿🇦 ZAR — South African Rand</option>
+      </select>
+    </div>
+    <div class="settings-row">
+      <div>
+        <strong>Appearance</strong>
+        <small id="themeLabel">Light mode</small>
+      </div>
+      <button
+        type="button"
+        class="theme-toggle"
+        id="themeToggle"
+        aria-label="Toggle appearance"
+      >
+        <span></span>
+      </button>
+    </div>
+  </section>
+</main>
+<nav class="bottom-nav">
+  <a
+    href="dashboard.html"
+    class="nav-item"
+    aria-label="Account"
+  >
+    <span>🏠</span>
+    <small>Account</small>
+  </a>
+  <a
+    href="settings.html"
+    class="nav-item active"
+    aria-label="Settings"
+  >
+    <span>⚙️</span>
+    <small>Settings</small>
+  </a>
+</nav>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
