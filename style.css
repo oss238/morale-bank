@@ -1,13 +1,17 @@
 :root {
-  --bg: #f5f7fb;
+  --bg: #f3f6fb;
   --card: #ffffff;
-  --text: #111827;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-  --primary: #111827;
-  --primary-hover: #273142;
-  --soft: #f0f2f5;
-  --shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+  --text: #172033;
+  --muted: #718096;
+  --border: #e3e8f0;
+  --primary: #3157d5;
+  --primary-hover: #2546b5;
+  --soft: #eef2ff;
+  --accent: #7c5cff;
+  --accent-light: #f1edff;
+  --success: #20a67a;
+  --shadow: 0 14px 40px rgba(36, 52, 82, 0.10);
+  --shadow-hover: 0 18px 45px rgba(36, 52, 82, 0.15);
 }
 
 * {
@@ -16,11 +20,19 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 10% 10%, rgba(124, 92, 255, 0.10), transparent 28%),
+    radial-gradient(circle at 90% 20%, rgba(49, 87, 213, 0.09), transparent 30%),
+    var(--bg);
   color: var(--text);
   min-height: 100vh;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 button,
@@ -32,6 +44,14 @@ select {
 button,
 select {
   cursor: pointer;
+}
+
+button {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+button:active {
+  transform: scale(0.98);
 }
 
 a {
@@ -52,9 +72,10 @@ a {
 .login-card {
   width: 100%;
   max-width: 420px;
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.96);
   padding: 42px 34px;
-  border-radius: 24px;
+  border-radius: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
   box-shadow: var(--shadow);
 }
 
@@ -69,13 +90,14 @@ a {
 .brand-mark {
   width: 40px;
   height: 40px;
-  border-radius: 12px;
-  background: var(--primary);
+  border-radius: 13px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: 800;
+  box-shadow: 0 8px 20px rgba(49, 87, 213, 0.25);
 }
 
 .login-card h2 {
@@ -101,32 +123,36 @@ a {
 .chat-form input {
   width: 100%;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 13px;
   padding: 14px;
   outline: none;
   background: var(--card);
   color: var(--text);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .login-card input:focus,
 .modal-card input:focus,
 .chat-form input:focus {
   border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(49, 87, 213, 0.10);
 }
 
 .primary-btn {
   width: 100%;
   border: 0;
-  border-radius: 12px;
+  border-radius: 13px;
   padding: 15px;
   margin-top: 24px;
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
   color: white;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(49, 87, 213, 0.20);
 }
 
 .primary-btn:hover {
-  background: var(--primary-hover);
+  background: linear-gradient(135deg, var(--primary-hover), var(--accent));
+  box-shadow: 0 12px 26px rgba(49, 87, 213, 0.25);
 }
 
 .login-message {
@@ -149,8 +175,12 @@ a {
   align-items: center;
   justify-content: space-between;
   padding: 0 7%;
-  background: var(--card);
-  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(227, 232, 240, 0.8);
+  position: sticky;
+  top: 0;
+  z-index: 30;
 }
 
 .profile-button {
@@ -162,10 +192,11 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
   color: white;
   border-radius: 50%;
   font-weight: 700;
+  box-shadow: 0 7px 18px rgba(49, 87, 213, 0.20);
 }
 
 .profile-avatar {
@@ -188,6 +219,7 @@ a {
 
 .welcome h1 {
   font-size: 32px;
+  letter-spacing: -0.5px;
 }
 
 /* BALANCE */
@@ -195,35 +227,63 @@ a {
 .balance-card {
   margin-top: 28px;
   padding: 30px;
-  border-radius: 24px;
-  background: var(--primary);
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(255, 255, 255, 0.18), transparent 25%),
+    radial-gradient(circle at 10% 100%, rgba(124, 92, 255, 0.30), transparent 35%),
+    linear-gradient(135deg, #3157d5, #684fd1);
   color: white;
-  box-shadow: var(--shadow);
+  box-shadow: 0 18px 40px rgba(49, 87, 213, 0.22);
+  position: relative;
+  overflow: hidden;
+}
+
+.balance-card::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  right: -70px;
+  bottom: -90px;
+  background: rgba(255, 255, 255, 0.10);
 }
 
 .balance-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .balance-header span {
-  opacity: 0.75;
+  opacity: 0.82;
   font-size: 14px;
 }
 
 .icon-btn {
   border: 0;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.13);
   color: white;
-  font-size: 20px;
+  font-size: 19px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .balance {
   font-size: clamp(32px, 7vw, 52px);
-  font-weight: 700;
+  font-weight: 750;
   margin: 20px 0;
   word-break: break-word;
+  letter-spacing: -1px;
+  position: relative;
+  z-index: 1;
 }
 
 .balance-footer {
@@ -231,23 +291,26 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 15px;
+  position: relative;
+  z-index: 1;
 }
 
 .balance-footer select {
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.14);
   color: white;
   padding: 9px 12px;
-  border-radius: 9px;
+  border-radius: 10px;
+  outline: none;
 }
 
 .balance-footer select option {
-  color: #111827;
+  color: #172033;
   background: white;
 }
 
 .account-label {
-  opacity: 0.7;
+  opacity: 0.78;
   font-size: 13px;
 }
 
@@ -263,28 +326,30 @@ a {
 .action-card {
   text-align: left;
   border: 1px solid var(--border);
-  border-radius: 18px;
-  background: var(--card);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.94);
   color: var(--text);
   padding: 22px;
-  transition: 0.2s;
+  transition: 0.2s ease;
 }
 
 .action-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  border-color: rgba(49, 87, 213, 0.18);
 }
 
 .action-icon {
   display: flex;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
   align-items: center;
   justify-content: center;
-  background: var(--soft);
+  background: linear-gradient(135deg, var(--soft), var(--accent-light));
+  color: var(--primary);
   margin-bottom: 14px;
-  font-size: 20px;
+  font-size: 21px;
 }
 
 .action-card strong,
@@ -302,9 +367,10 @@ a {
 .account-section {
   margin-top: 30px;
   padding: 24px;
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.94);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 22px;
+  box-shadow: 0 8px 25px rgba(36, 52, 82, 0.05);
 }
 
 .section-heading {
@@ -353,10 +419,11 @@ a {
 
 .settings-card {
   margin-top: 32px;
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.94);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 22px;
   overflow: hidden;
+  box-shadow: 0 8px 25px rgba(36, 52, 82, 0.05);
 }
 
 .settings-row {
@@ -385,18 +452,24 @@ a {
 .settings-action {
   border: 0;
   background: var(--soft);
-  color: var(--text);
+  color: var(--primary);
   padding: 9px 14px;
-  border-radius: 9px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.settings-action:hover {
+  background: var(--accent-light);
 }
 
 .settings-row select {
   max-width: 190px;
-  padding: 9px;
+  padding: 9px 12px;
   border: 1px solid var(--border);
-  border-radius: 9px;
+  border-radius: 10px;
   background: var(--card);
   color: var(--text);
+  outline: none;
 }
 
 /* THEME SWITCH */
@@ -406,7 +479,7 @@ a {
   height: 30px;
   border: 0;
   border-radius: 20px;
-  background: #d1d5db;
+  background: #cbd5e1;
   padding: 3px;
 }
 
@@ -417,10 +490,11 @@ a {
   border-radius: 50%;
   background: white;
   transition: transform 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 body.dark .theme-toggle {
-  background: #374151;
+  background: #4b5563;
 }
 
 body.dark .theme-toggle span {
@@ -439,19 +513,27 @@ body.dark .theme-toggle span {
   justify-content: center;
   gap: 80px;
   align-items: center;
-  background: var(--card);
-  border-top: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(227, 232, 240, 0.85);
+  box-shadow: 0 -8px 25px rgba(36, 52, 82, 0.06);
   z-index: 20;
 }
 
 .nav-item {
   text-align: center;
   color: var(--muted);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-item:hover {
+  color: var(--primary);
+  transform: translateY(-2px);
 }
 
 .nav-item span {
   display: block;
-  font-size: 21px;
+  font-size: 23px;
   margin-bottom: 3px;
 }
 
@@ -460,8 +542,8 @@ body.dark .theme-toggle span {
 }
 
 .nav-item.active {
-  color: var(--text);
-  font-weight: 600;
+  color: var(--primary);
+  font-weight: 700;
 }
 
 /* MODAL */
@@ -470,7 +552,8 @@ body.dark .theme-toggle span {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(5px);
   align-items: center;
   justify-content: center;
   padding: 20px;
@@ -485,9 +568,10 @@ body.dark .theme-toggle span {
   width: 100%;
   max-width: 400px;
   background: var(--card);
-  border-radius: 22px;
+  border-radius: 24px;
   padding: 28px;
   position: relative;
+  box-shadow: var(--shadow-hover);
 }
 
 .modal-card p {
@@ -516,8 +600,8 @@ body.dark .theme-toggle span {
   height: 500px;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 20px;
-  box-shadow: var(--shadow);
+  border-radius: 22px;
+  box-shadow: var(--shadow-hover);
   z-index: 40;
   overflow: hidden;
   flex-direction: column;
@@ -597,29 +681,65 @@ body.dark .theme-toggle span {
 /* DARK MODE */
 
 body.dark {
-  --bg: #0d1117;
-  --card: #161b22;
-  --text: #f3f4f6;
-  --muted: #9ca3af;
-  --border: #30363d;
-  --primary: #f3f4f6;
-  --primary-hover: #d1d5db;
-  --soft: #21262d;
+  --bg: #0b1020;
+  --card: #151c2d;
+  --text: #f3f6ff;
+  --muted: #9ba7bd;
+  --border: #29344a;
+  --primary: #718cff;
+  --primary-hover: #5e78ed;
+  --soft: #202a40;
+  --accent: #927cff;
+  --accent-light: #292344;
+  --shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
+  --shadow-hover: 0 18px 45px rgba(0, 0, 0, 0.32);
+
+  background:
+    radial-gradient(circle at 10% 10%, rgba(124, 92, 255, 0.12), transparent 28%),
+    radial-gradient(circle at 90% 20%, rgba(49, 87, 213, 0.12), transparent 30%),
+    var(--bg);
 }
 
-body.dark .brand-mark,
-body.dark .balance-card {
-  color: #111827;
+body.dark .topbar,
+body.dark .bottom-nav {
+  background: rgba(21, 28, 45, 0.94);
+  border-color: var(--border);
 }
 
-body.dark .primary-btn,
-body.dark .chat-form button {
-  color: #111827;
+body.dark .login-card,
+body.dark .action-card,
+body.dark .account-section,
+body.dark .settings-card {
+  background: rgba(21, 28, 45, 0.95);
+  border-color: var(--border);
+}
+
+body.dark .login-card input,
+body.dark .modal-card input,
+body.dark .chat-form input,
+body.dark .settings-row select {
+  background: #101728;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+body.dark .brand-mark {
+  color: white;
 }
 
 body.dark .profile-avatar,
 body.dark .large-avatar {
-  color: #111827;
+  color: white;
+}
+
+body.dark .action-icon {
+  background: var(--soft);
+  color: #a9b6ff;
+}
+
+body.dark .primary-btn,
+body.dark .chat-form button {
+  color: white;
 }
 
 /* MOBILE */
