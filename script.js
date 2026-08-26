@@ -1,4 +1,8 @@
 /* =========================
+   MORale UI SCRIPT
+========================= */
+
+/* =========================
    CURRENCY DATA
 ========================= */
 
@@ -15,6 +19,11 @@ const currencies = {
   ZAR: { symbol: "R", flag: "🇿🇦" }
 };
 
+
+/* =========================
+   SAVED SETTINGS
+========================= */
+
 let selectedCurrency =
   localStorage.getItem("moraleCurrency") || "USD";
 
@@ -24,6 +33,8 @@ let accountName =
 let balanceHidden =
   localStorage.getItem("moraleBalanceHidden") === "true";
 
+const defaultBalance = 3000000;
+
 
 /* =========================
    THEME
@@ -31,22 +42,23 @@ let balanceHidden =
 
 function loadTheme() {
   const savedTheme =
-    localStorage.getItem("moraleTheme");
+    localStorage.getItem("moraleTheme") || "light";
 
-  if (savedTheme === "dark") {
-    document.body.classList.add("dark");
-  }
+  document.body.classList.toggle(
+    "dark",
+    savedTheme === "dark"
+  );
 
   updateThemeLabel();
 }
 
 function updateThemeLabel() {
-  const label =
+  const themeLabel =
     document.getElementById("themeLabel");
 
-  if (!label) return;
+  if (!themeLabel) return;
 
-  label.textContent =
+  themeLabel.textContent =
     document.body.classList.contains("dark")
       ? "Dark mode"
       : "Light mode";
@@ -57,13 +69,13 @@ const themeToggle =
 
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
+
+    const isDark =
+      document.body.classList.toggle("dark");
 
     localStorage.setItem(
       "moraleTheme",
-      document.body.classList.contains("dark")
-        ? "dark"
-        : "light"
+      isDark ? "dark" : "light"
     );
 
     updateThemeLabel();
@@ -77,40 +89,51 @@ loadTheme();
    CURRENCY DISPLAY
 ========================= */
 
+function getCurrency() {
+  return currencies[selectedCurrency] || currencies.USD;
+}
+
 function updateCurrencyText() {
-  const currency =
-    currencies[selectedCurrency] || currencies.USD;
+
+  const currency = getCurrency();
+
+  const displayText =
+    `${currency.flag} ${selectedCurrency}`;
 
   const accountCurrency =
     document.getElementById("accountCurrency");
 
   const accountCurrencyDetails =
-    document.getElementById("accountCurrencyDetails");
+    document.getElementById(
+      "accountCurrencyDetails"
+    );
 
   const settingsCurrency =
-    document.getElementById("settingsCurrency");
-
-  const text =
-    `${currency.flag} ${selectedCurrency}`;
+    document.getElementById(
+      "settingsCurrency"
+    );
 
   if (accountCurrency) {
-    accountCurrency.textContent = text;
+    accountCurrency.textContent =
+      displayText;
   }
 
   if (accountCurrencyDetails) {
-    accountCurrencyDetails.textContent = text;
+    accountCurrencyDetails.textContent =
+      displayText;
   }
 
   if (settingsCurrency) {
-    settingsCurrency.textContent = text;
+    settingsCurrency.textContent =
+      displayText;
   }
 }
-
-updateCurrencyText();
 
 
 /* =========================
    SETTINGS CURRENCY
+   Currency can only be
+   changed here.
 ========================= */
 
 const settingsCurrencySelect =
@@ -119,14 +142,16 @@ const settingsCurrencySelect =
   );
 
 if (settingsCurrencySelect) {
+
   settingsCurrencySelect.value =
     selectedCurrency;
 
   settingsCurrencySelect.addEventListener(
     "change",
-    (event) => {
+    function () {
+
       selectedCurrency =
-        event.target.value;
+        this.value;
 
       localStorage.setItem(
         "moraleCurrency",
@@ -138,35 +163,66 @@ if (settingsCurrencySelect) {
   );
 }
 
+updateCurrencyText();
+
 
 /* =========================
-   BALANCE VISIBILITY
+   BALANCE
 ========================= */
 
+function formatBalance() {
+
+  const currency = getCurrency();
+
+  return (
+    currency.symbol +
+    defaultBalance.toLocaleString(
+      "en-US",
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }
+    )
+  );
+}
+
 function updateBalanceVisibility() {
+
   const balanceDisplay =
-    document.getElementById("balanceDisplay");
+    document.getElementById(
+      "balanceDisplay"
+    );
 
   const toggleBalance =
-    document.getElementById("toggleBalance");
+    document.getElementById(
+      "toggleBalance"
+    );
 
   if (!balanceDisplay || !toggleBalance) {
     return;
   }
 
   if (balanceHidden) {
-    balanceDisplay.textContent = "••••••••";
-    toggleBalance.textContent = "🙈";
+
+    balanceDisplay.textContent =
+      "••••••••";
+
+    toggleBalance.textContent =
+      "🙈";
+
     toggleBalance.setAttribute(
       "aria-label",
       "Show balance"
     );
+
   } else {
-    /*
-      The displayed amount remains whatever
-      is already present in the page.
-    */
-    toggleBalance.textContent = "👁️";
+
+    balanceDisplay.textContent =
+      formatBalance();
+
+    toggleBalance.textContent =
+      "👁️";
+
     toggleBalance.setAttribute(
       "aria-label",
       "Hide balance"
@@ -175,49 +231,77 @@ function updateBalanceVisibility() {
 }
 
 const toggleBalance =
-  document.getElementById("toggleBalance");
+  document.getElementById(
+    "toggleBalance"
+  );
 
 if (toggleBalance) {
-  toggleBalance.addEventListener("click", () => {
-    balanceHidden = !balanceHidden;
 
-    localStorage.setItem(
-      "moraleBalanceHidden",
-      balanceHidden
-    );
+  toggleBalance.addEventListener(
+    "click",
+    () => {
 
-    updateBalanceVisibility();
-  });
+      balanceHidden =
+        !balanceHidden;
+
+      localStorage.setItem(
+        "moraleBalanceHidden",
+        balanceHidden
+      );
+
+      updateBalanceVisibility();
+    }
+  );
 }
 
 updateBalanceVisibility();
 
 
 /* =========================
-   ACCOUNT NAME
+   PROFILE NAME
 ========================= */
 
 function updateName() {
+
   const accountNameElement =
-    document.getElementById("accountName");
+    document.getElementById(
+      "accountName"
+    );
 
   const accountHolder =
-    document.getElementById("accountHolder");
+    document.getElementById(
+      "accountHolder"
+    );
 
   const settingsName =
-    document.getElementById("settingsName");
+    document.getElementById(
+      "settingsName"
+    );
 
   const profileNameText =
-    document.getElementById("profileNameText");
+    document.getElementById(
+      "profileNameText"
+    );
 
   const settingsAvatar =
-    document.getElementById("settingsAvatar");
+    document.getElementById(
+      "settingsAvatar"
+    );
 
   const dashboardAvatar =
-    document.getElementById("dashboardAvatar");
+    document.getElementById(
+      "dashboardAvatar"
+    );
+
+  const settingsTopAvatar =
+    document.getElementById(
+      "settingsTopAvatar"
+    );
 
   const firstLetter =
-    accountName.charAt(0).toUpperCase();
+    accountName
+      .charAt(0)
+      .toUpperCase();
 
   if (accountNameElement) {
     accountNameElement.textContent =
@@ -248,6 +332,11 @@ function updateName() {
     dashboardAvatar.textContent =
       firstLetter;
   }
+
+  if (settingsTopAvatar) {
+    settingsTopAvatar.textContent =
+      firstLetter;
+  }
 }
 
 updateName();
@@ -258,70 +347,95 @@ updateName();
 ========================= */
 
 const editName =
-  document.getElementById("editName");
+  document.getElementById(
+    "editName"
+  );
 
 if (editName) {
-  editName.addEventListener("click", () => {
-    const newName =
-      prompt(
-        "Enter profile name:",
+
+  editName.addEventListener(
+    "click",
+    () => {
+
+      const newName =
+        prompt(
+          "Enter profile name:",
+          accountName
+        );
+
+      if (newName === null) {
+        return;
+      }
+
+      const cleanedName =
+        newName.trim();
+
+      if (!cleanedName) {
+        return;
+      }
+
+      accountName =
+        cleanedName;
+
+      localStorage.setItem(
+        "moraleName",
         accountName
       );
 
-    if (!newName) return;
-
-    const cleanedName =
-      newName.trim();
-
-    if (!cleanedName) return;
-
-    accountName =
-      cleanedName;
-
-    localStorage.setItem(
-      "moraleName",
-      accountName
-    );
-
-    updateName();
-  });
+      updateName();
+    }
+  );
 }
 
 
 /* =========================
-   PASSWORD VISIBILITY
+   PASSWORD SHOW / HIDE
 ========================= */
 
 const passwordInput =
-  document.getElementById("password");
+  document.getElementById(
+    "password"
+  );
 
 const togglePassword =
-  document.getElementById("togglePassword");
+  document.getElementById(
+    "togglePassword"
+  );
 
-if (passwordInput && togglePassword) {
+if (
+  passwordInput &&
+  togglePassword
+) {
 
-  togglePassword.textContent = "👁️";
+  togglePassword.textContent =
+    "👁️";
+
+  togglePassword.setAttribute(
+    "aria-label",
+    "Show password"
+  );
 
   togglePassword.addEventListener(
     "click",
     () => {
 
-      const isHidden =
-        passwordInput.type === "password";
+      const currentlyHidden =
+        passwordInput.type ===
+        "password";
 
       passwordInput.type =
-        isHidden
+        currentlyHidden
           ? "text"
           : "password";
 
       togglePassword.textContent =
-        isHidden
+        currentlyHidden
           ? "🙈"
           : "👁️";
 
       togglePassword.setAttribute(
         "aria-label",
-        isHidden
+        currentlyHidden
           ? "Hide password"
           : "Show password"
       );
@@ -335,54 +449,99 @@ if (passwordInput && togglePassword) {
 ========================= */
 
 const supportButton =
-  document.getElementById("supportButton");
+  document.getElementById(
+    "supportButton"
+  );
 
 const supportPanel =
-  document.getElementById("supportPanel");
+  document.getElementById(
+    "supportPanel"
+  );
 
 const closeSupport =
-  document.getElementById("closeSupport");
+  document.getElementById(
+    "closeSupport"
+  );
 
 const chatForm =
-  document.getElementById("chatForm");
+  document.getElementById(
+    "chatForm"
+  );
 
 const chatInput =
-  document.getElementById("chatInput");
+  document.getElementById(
+    "chatInput"
+  );
 
 const chatMessages =
-  document.getElementById("chatMessages");
+  document.getElementById(
+    "chatMessages"
+  );
 
-if (supportButton && supportPanel) {
+
+if (
+  supportButton &&
+  supportPanel
+) {
+
   supportButton.addEventListener(
     "click",
     () => {
-      supportPanel.classList.add("show");
+      supportPanel.classList.add(
+        "show"
+      );
+
+      if (chatInput) {
+        chatInput.focus();
+      }
     }
   );
 }
 
-if (closeSupport && supportPanel) {
+
+if (
+  closeSupport &&
+  supportPanel
+) {
+
   closeSupport.addEventListener(
     "click",
     () => {
-      supportPanel.classList.remove("show");
+      supportPanel.classList.remove(
+        "show"
+      );
     }
   );
 }
 
-if (chatForm && chatInput && chatMessages) {
+
+/* =========================
+   LOCAL CHAT UI
+========================= */
+
+if (
+  chatForm &&
+  chatInput &&
+  chatMessages
+) {
+
   chatForm.addEventListener(
     "submit",
     (event) => {
+
       event.preventDefault();
 
       const message =
         chatInput.value.trim();
 
-      if (!message) return;
+      if (!message) {
+        return;
+      }
 
       const sentMessage =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       sentMessage.className =
         "message sent";
@@ -400,8 +559,11 @@ if (chatForm && chatInput && chatMessages) {
         chatMessages.scrollHeight;
 
       setTimeout(() => {
+
         const reply =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         reply.className =
           "message received";
@@ -420,3 +582,24 @@ if (chatForm && chatInput && chatMessages) {
     }
   );
 }
+
+
+/* =========================
+   CLOSE SUPPORT WITH ESC
+========================= */
+
+document.addEventListener(
+  "keydown",
+  (event) => {
+
+    if (
+      event.key === "Escape" &&
+      supportPanel
+    ) {
+
+      supportPanel.classList.remove(
+        "show"
+      );
+    }
+  }
+);
