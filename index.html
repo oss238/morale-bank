@@ -6,46 +6,49 @@
   <title>Morale</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
   <main class="login-page">
     <section class="login-card">
-
-      <div class="brand">
-        <div class="brand-mark">M</div>
-        <h1>Morale</h1>
-      </div>
-
-      <h2>Welcome back</h2>
-      <p class="subtitle">Sign in to continue</p>
-
-      <form id="loginForm">
-        <label for="email">Email</label>
-        <input
-          type="text"
-          id="email"
-          placeholder="Enter your email"
-          autocomplete="off"
-          required
-        >
-
-        <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          placeholder="Enter your password"
-          autocomplete="off"
-          required
-        >
-
-        <button type="submit" class="primary-btn">Sign in</button>
-      </form>
-
-      <p id="loginMessage" class="login-message"></p>
-
-    </section>
+  <div class="brand">
+    <div class="brand-mark">M</div>
+    <h1>Morale</h1>
+  </div>
+  <h2>Welcome back</h2>
+  <p class="subtitle">Sign in to continue</p>
+  <form id="loginForm">
+    <label for="email">Email</label>
+    <input
+      type="text"
+      id="email"
+      placeholder="Enter your email"
+      autocomplete="off"
+      required
+    >
+    <label for="password">Password</label>
+    <div class="password-field">
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter your password"
+        autocomplete="off"
+        required
+      >
+      <button
+        type="button"
+        id="togglePassword"
+        class="password-toggle"
+        aria-label="Show password"
+      >
+        👁️
+      </button>
+    </div>
+    <button type="submit" class="primary-btn">
+      Sign in
+    </button>
+  </form>
+  <p id="loginMessage" class="login-message"></p>
+</section>
   </main>
-
   <script src="script.js"></script>
 </body>
 </html>
