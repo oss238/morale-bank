@@ -341,6 +341,293 @@ function updateName() {
 
 updateName();
 
+/* =========================
+   PROFILE PICTURE
+========================= */
+
+let savedProfilePicture =
+  localStorage.getItem("moraleProfilePicture") || "";
+
+
+function updateProfilePicture() {
+
+  const dashboardAvatar =
+    document.getElementById("dashboardAvatar");
+
+  const settingsAvatar =
+    document.getElementById("settingsAvatar");
+
+  const settingsTopAvatar =
+    document.getElementById("settingsTopAvatar");
+
+  const settingsProfileImage =
+    document.getElementById(
+      "settingsProfileImage"
+    );
+
+  if (savedProfilePicture) {
+
+    if (settingsProfileImage) {
+      settingsProfileImage.src =
+        savedProfilePicture;
+    }
+
+    if (dashboardAvatar) {
+
+      dashboardAvatar.innerHTML =
+        "";
+
+      const image =
+        document.createElement("img");
+
+      image.src =
+        savedProfilePicture;
+
+      image.alt =
+        "Profile picture";
+
+      dashboardAvatar.appendChild(
+        image
+      );
+    }
+
+    if (settingsTopAvatar) {
+
+      settingsTopAvatar.innerHTML =
+        "";
+
+      const image =
+        document.createElement("img");
+
+      image.src =
+        savedProfilePicture;
+
+      image.alt =
+        "Profile picture";
+
+      settingsTopAvatar.appendChild(
+        image
+      );
+    }
+
+  } else {
+
+    if (settingsProfileImage) {
+      settingsProfileImage.src =
+        "avatar.png";
+    }
+
+    if (dashboardAvatar) {
+      dashboardAvatar.textContent =
+        accountName
+          .charAt(0)
+          .toUpperCase();
+    }
+
+    if (settingsTopAvatar) {
+      settingsTopAvatar.textContent =
+        accountName
+          .charAt(0)
+          .toUpperCase();
+    }
+  }
+}
+
+
+const changePicture =
+  document.getElementById(
+    "changePicture"
+  );
+
+const profilePictureInput =
+  document.getElementById(
+    "profilePictureInput"
+  );
+
+
+if (
+  changePicture &&
+  profilePictureInput
+) {
+
+  changePicture.addEventListener(
+    "click",
+    () => {
+
+      profilePictureInput.click();
+
+    }
+  );
+
+
+  profilePictureInput.addEventListener(
+    "change",
+    function () {
+
+      const file =
+        this.files &&
+        this.files[0];
+
+      if (!file) {
+        return;
+      }
+
+      if (!file.type.startsWith("image/")) {
+        return;
+      }
+
+      const reader =
+        new FileReader();
+
+      reader.onload =
+        function (event) {
+
+          savedProfilePicture =
+            event.target.result;
+
+          localStorage.setItem(
+            "moraleProfilePicture",
+            savedProfilePicture
+          );
+
+          updateProfilePicture();
+
+        };
+
+      reader.readAsDataURL(file);
+
+    }
+  );
+}
+
+
+updateProfilePicture();
+
+
+/* =========================
+   WEBSITE NAME
+========================= */
+
+let websiteName =
+  localStorage.getItem(
+    "moraleWebsiteName"
+  ) || "Morale";
+
+
+function updateWebsiteName() {
+
+  const websiteNameElements =
+    document.querySelectorAll(
+      "#websiteName"
+    );
+
+  const websiteNameText =
+    document.getElementById(
+      "websiteNameText"
+    );
+
+  const brandMark =
+    document.getElementById(
+      "brandMark"
+    );
+
+  const pageTitle =
+    document.querySelector("title");
+
+
+  websiteNameElements.forEach(
+    (element) => {
+
+      element.textContent =
+        websiteName;
+
+    }
+  );
+
+
+  if (websiteNameText) {
+
+    websiteNameText.textContent =
+      websiteName;
+
+  }
+
+
+  if (brandMark) {
+
+    brandMark.textContent =
+      websiteName
+        .charAt(0)
+        .toUpperCase();
+
+  }
+
+
+  if (pageTitle) {
+
+    const separator =
+      pageTitle.textContent.indexOf(" — ");
+
+    const pageSection =
+      separator !== -1
+        ? pageTitle.textContent.substring(
+            separator
+          )
+        : "";
+
+    pageTitle.textContent =
+      websiteName +
+      pageSection;
+
+  }
+}
+
+
+updateWebsiteName();
+
+
+const editWebsiteName =
+  document.getElementById(
+    "editWebsiteName"
+  );
+
+
+if (editWebsiteName) {
+
+  editWebsiteName.addEventListener(
+    "click",
+    () => {
+
+      const newWebsiteName =
+        prompt(
+          "Enter website name:",
+          websiteName
+        );
+
+      if (newWebsiteName === null) {
+        return;
+      }
+
+      const cleanedWebsiteName =
+        newWebsiteName.trim();
+
+      if (!cleanedWebsiteName) {
+        return;
+      }
+
+      websiteName =
+        cleanedWebsiteName;
+
+      localStorage.setItem(
+        "moraleWebsiteName",
+        websiteName
+      );
+
+      updateWebsiteName();
+
+    }
+  );
+}
 
 /* =========================
    EDIT PROFILE NAME
