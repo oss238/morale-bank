@@ -932,10 +932,61 @@ body.dark .message.sent {
   }
 }
 
+/* =========================
+   PROFILE PICTURE
+========================= */
+
+.large-avatar {
+  position: relative;
+  overflow: hidden;
+}
+
 .large-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
   display: block;
+}
+
+.large-avatar img[src=""] {
+  display: none;
+}
+
+#settingsAvatarLetter {
+  display: none;
+}
+
+.profile-avatar {
+  overflow: hidden;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.change-picture-btn {
+  display: inline-block;
+  width: auto;
+  margin-top: 0;
+}
+
+
+/* =========================
+   WEBSITE NAME
+========================= */
+
+#websiteName {
+  white-space: nowrap;
+}
+
+#websiteNameText {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
