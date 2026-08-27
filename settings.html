@@ -63,87 +63,100 @@
 
       <section class="settings-card">
 
-        <!-- PROFILE NAME -->
+  <!-- PROFILE NAME -->
+  <div class="settings-row">
+    <div>
+      <strong>Profile name</strong>
+      <small id="profileNameText">Michael</small>
+    </div>
 
-        <div class="settings-row">
-          <div>
-            <strong>Profile name</strong>
-            <small id="profileNameText">Michael</small>
-          </div>
-
-          <button
-            type="button"
-            class="settings-action"
-            id="editName"
-          >
-            Edit
-          </button>
-        </div>
-
-
-        <!-- WEBSITE NAME -->
-
-        <div class="settings-row">
-          <div>
-            <strong>Website name</strong>
-            <small id="websiteNameText">Morale</small>
-          </div>
-
-          <button
-            type="button"
-            class="settings-action"
-            id="editWebsiteName"
-          >
-            Edit
-          </button>
-        </div>
+    <button
+      type="button"
+      class="settings-action"
+      id="editName"
+    >
+      Edit
+    </button>
+  </div>
 
 
-        <!-- CURRENCY -->
+  <!-- WEBSITE NAME -->
+  <div class="settings-row">
+    <div>
+      <strong>Website name</strong>
+      <small id="websiteNameText">Morale</small>
+    </div>
 
-        <div class="settings-row">
-          <div>
-            <strong>Account currency</strong>
-            <small id="settingsCurrency">🇺🇸 USD</small>
-          </div>
-
-          <select
-            id="settingsCurrencySelect"
-            aria-label="Select account currency"
-          >
-            <option value="USD">🇺🇸 USD — US Dollar</option>
-            <option value="GBP">🇬🇧 GBP — British Pound</option>
-            <option value="EUR">🇪🇺 EUR — Euro</option>
-            <option value="NGN">🇳🇬 NGN — Nigerian Naira</option>
-            <option value="BRL">🇧🇷 BRL — Brazilian Real</option>
-            <option value="CAD">🇨🇦 CAD — Canadian Dollar</option>
-            <option value="AUD">🇦🇺 AUD — Australian Dollar</option>
-            <option value="CHF">🇨🇭 CHF — Swiss Franc</option>
-            <option value="JPY">🇯🇵 JPY — Japanese Yen</option>
-            <option value="ZAR">🇿🇦 ZAR — South African Rand</option>
-          </select>
-        </div>
+    <button
+      type="button"
+      class="settings-action"
+      id="editWebsiteName"
+    >
+      Edit
+    </button>
+  </div>
 
 
-        <!-- APPEARANCE -->
+  <!-- TEST / AMOUNT -->
+  <div class="settings-row">
+    <div>
+      <strong>Test/Amount</strong>
+      <small id="AmountText">$3,000,000.00</small>
+    </div>
 
-        <div class="settings-row">
-          <div>
-            <strong>Appearance</strong>
-            <small id="themeLabel">Light mode</small>
-          </div>
+    <button
+      type="button"
+      class="settings-action"
+      id="editAmount"
+    >
+      Edit
+    </button>
+  </div>
 
-          <button
-            type="button"
-            class="theme-toggle"
-            id="themeToggle"
-            aria-label="Toggle appearance"
-          >
-            <span></span>
-          </button>
-        </div>
 
-      </section>
+  <!-- ACCOUNT CURRENCY -->
+  <div class="settings-row">
+    <div>
+      <strong>Account currency</strong>
+      <small id="settingsCurrency">🇺🇸 USD</small>
+    </div>
+
+    <select
+      id="settingsCurrencySelect"
+      aria-label="Select account currency"
+    >
+      <option value="USD">🇺🇸 USD — US Dollar</option>
+      <option value="GBP">🇬🇧 GBP — British Pound</option>
+      <option value="EUR">🇪🇺 EUR — Euro</option>
+      <option value="NGN">🇳🇬 NGN — Nigerian Naira</option>
+      <option value="BRL">🇧🇷 BRL — Brazilian Real</option>
+      <option value="CAD">🇨🇦 CAD — Canadian Dollar</option>
+      <option value="AUD">🇦🇺 AUD — Australian Dollar</option>
+      <option value="CHF">🇨🇭 CHF — Swiss Franc</option>
+      <option value="JPY">🇯🇵 JPY — Japanese Yen</option>
+      <option value="ZAR">🇿🇦 ZAR — South African Rand</option>
+    </select>
+  </div>
+
+
+  <!-- APPEARANCE -->
+  <div class="settings-row">
+    <div>
+      <strong>Appearance</strong>
+      <small id="themeLabel">Light mode</small>
+    </div>
+
+    <button
+      type="button"
+      class="theme-toggle"
+      id="themeToggle"
+      aria-label="Toggle appearance"
+    >
+      <span></span>
+    </button>
+  </div>
+
+</section>
 
     </main>
 
