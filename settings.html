@@ -21,14 +21,14 @@
         class="profile-button"
         aria-label="Go to account"
       >
-        <span class="profile-avatar" id="settingsTopAvatar">
-          M
-        </span>
+        <span class="profile-avatar" id="settingsTopAvatar">M</span>
       </a>
     </header>
 
+
     <main class="settings-page">
 
+      <!-- PROFILE -->
       <section class="settings-profile">
 
         <div class="large-avatar" id="settingsAvatar">
@@ -37,13 +37,11 @@
             src="avatar.png"
             alt="Profile picture"
           >
-          <span id="settingsAvatarLetter">M</span>
         </div>
 
         <h1 id="settingsName">Michael</h1>
         <p>Personal account</p>
 
-        <!-- Hidden image picker -->
         <input
           type="file"
           id="profilePictureInput"
@@ -61,123 +59,109 @@
 
       </section>
 
+
+      <!-- SETTINGS -->
       <section class="settings-card">
 
+        <!-- TEST / DEMO AMOUNT -->
         <div class="settings-row">
-  <div>
-    <strong>Amount</strong>
-    <small id="AmountText">$3,000,000.00</small>
-  </div>
+          <div>
+            <strong>Test/Demo Amount</strong>
+            <small id="demoAmountText">$3,000,000.00</small>
+          </div>
 
-  <button
-    type="button"
-    class="settings-action"
-    id="editAmount"
-  >
-    Edit
-  </button>
-</div> 
-      <!-- AMOUNT -->
-<div class="settings-row">
-  <div>
-    <strong>Test/Amount</strong>
-    <small id="demoText">$3,000,000.00</small>
-  </div>
-
-  <button
-    type="button"
-    class="settings-action"
-    id="editAmount"
-  >
-    Edit
-  </button>
-</div>
-  <!-- PROFILE NAME -->
-  <div class="settings-row">
-    <div>
-      <strong>Profile name</strong>
-      <small id="profileNameText">Michael</small>
-    </div>
-
-    <button
-      type="button"
-      class="settings-action"
-      id="editName"
-    >
-      Edit
-    </button>
-  </div>
+          <button
+            type="button"
+            class="settings-action"
+            id="editDemoAmount"
+          >
+            Edit
+          </button>
+        </div>
 
 
-  <!-- WEBSITE NAME -->
-  <div class="settings-row">
-    <div>
-      <strong>Website name</strong>
-      <small id="websiteNameText">Morale</small>
-    </div>
+        <!-- PROFILE NAME -->
+        <div class="settings-row">
+          <div>
+            <strong>Profile name</strong>
+            <small id="profileNameText">Michael</small>
+          </div>
 
-    <button
-      type="button"
-      class="settings-action"
-      id="editWebsiteName"
-    >
-      Edit
-    </button>
-  </div>
-
-
-  
+          <button
+            type="button"
+            class="settings-action"
+            id="editName"
+          >
+            Edit
+          </button>
+        </div>
 
 
-  <!-- ACCOUNT CURRENCY -->
-  <div class="settings-row">
-    <div>
-      <strong>Account currency</strong>
-      <small id="settingsCurrency">🇺🇸 USD</small>
-    </div>
+        <!-- WEBSITE NAME -->
+        <div class="settings-row">
+          <div>
+            <strong>Website name</strong>
+            <small id="websiteNameText">Morale</small>
+          </div>
 
-    <select
-      id="settingsCurrencySelect"
-      aria-label="Select account currency"
-    >
-      <option value="USD">🇺🇸 USD — US Dollar</option>
-      <option value="GBP">🇬🇧 GBP — British Pound</option>
-      <option value="EUR">🇪🇺 EUR — Euro</option>
-      <option value="NGN">🇳🇬 NGN — Nigerian Naira</option>
-      <option value="BRL">🇧🇷 BRL — Brazilian Real</option>
-      <option value="CAD">🇨🇦 CAD — Canadian Dollar</option>
-      <option value="AUD">🇦🇺 AUD — Australian Dollar</option>
-      <option value="CHF">🇨🇭 CHF — Swiss Franc</option>
-      <option value="JPY">🇯🇵 JPY — Japanese Yen</option>
-      <option value="ZAR">🇿🇦 ZAR — South African Rand</option>
-    </select>
-  </div>
+          <button
+            type="button"
+            class="settings-action"
+            id="editWebsiteName"
+          >
+            Edit
+          </button>
+        </div>
 
 
-  <!-- APPEARANCE -->
-  <div class="settings-row">
-    <div>
-      <strong>Appearance</strong>
-      <small id="themeLabel">Light mode</small>
-    </div>
+        <!-- CURRENCY -->
+        <div class="settings-row">
+          <div>
+            <strong>Account currency</strong>
+            <small id="settingsCurrency">🇺🇸 USD</small>
+          </div>
 
-    <button
-      type="button"
-      class="theme-toggle"
-      id="themeToggle"
-      aria-label="Toggle appearance"
-    >
-      <span></span>
-    </button>
-  </div>
+          <select
+            id="settingsCurrencySelect"
+            aria-label="Select account currency"
+          >
+            <option value="USD">🇺🇸 USD — US Dollar</option>
+            <option value="GBP">🇬🇧 GBP — British Pound</option>
+            <option value="EUR">🇪🇺 EUR — Euro</option>
+            <option value="NGN">🇳🇬 NGN — Nigerian Naira</option>
+            <option value="BRL">🇧🇷 BRL — Brazilian Real</option>
+            <option value="CAD">🇨🇦 CAD — Canadian Dollar</option>
+            <option value="AUD">🇦🇺 AUD — Australian Dollar</option>
+            <option value="CHF">🇨🇭 CHF — Swiss Franc</option>
+            <option value="JPY">🇯🇵 JPY — Japanese Yen</option>
+            <option value="ZAR">🇿🇦 ZAR — South African Rand</option>
+          </select>
+        </div>
 
-</section>
+
+        <!-- APPEARANCE -->
+        <div class="settings-row">
+          <div>
+            <strong>Appearance</strong>
+            <small id="themeLabel">Light mode</small>
+          </div>
+
+          <button
+            type="button"
+            class="theme-toggle"
+            id="themeToggle"
+            aria-label="Toggle appearance"
+          >
+            <span></span>
+          </button>
+        </div>
+
+      </section>
 
     </main>
 
 
     <!-- BOTTOM NAVIGATION -->
-
     <nav class="bottom-nav">
 
       <a
