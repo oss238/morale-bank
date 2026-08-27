@@ -345,7 +345,7 @@ updateName();
    PROFILE PICTURE
 ========================= */
 
-let savedProfilePicture =
+var savedProfilePicture =
   localStorage.getItem("moraleProfilePicture") || "";
 
 
@@ -412,24 +412,24 @@ function updateProfilePicture() {
 
   } else {
 
-    if (settingsProfileImage) {
-      settingsProfileImage.src =
-        "avatar.png";
-    }
+    if (!savedProfilePicture) {
 
-    if (dashboardAvatar) {
-      dashboardAvatar.textContent =
-        accountName
-          .charAt(0)
-          .toUpperCase();
-    }
+  if (settingsAvatar) {
+    settingsAvatar.textContent =
+      firstLetter;
+  }
 
-    if (settingsTopAvatar) {
-      settingsTopAvatar.textContent =
-        accountName
-          .charAt(0)
-          .toUpperCase();
-    }
+  if (dashboardAvatar) {
+    dashboardAvatar.textContent =
+      firstLetter;
+  }
+
+  if (settingsTopAvatar) {
+    settingsTopAvatar.textContent =
+      firstLetter;
+  }
+
+}
   }
 }
 
