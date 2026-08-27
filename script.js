@@ -1,6 +1,7 @@
 /* =========================
-   MORale UI SCRIPT
+   MORALE UI SCRIPT
 ========================= */
+
 
 /* =========================
    CURRENCY DATA
@@ -30,10 +31,24 @@ let selectedCurrency =
 let accountName =
   localStorage.getItem("moraleName") || "Michael";
 
+let websiteName =
+  localStorage.getItem("moraleWebsiteName") || "Morale";
+
 let balanceHidden =
   localStorage.getItem("moraleBalanceHidden") === "true";
 
-const defaultBalance = 3000000;
+
+/* =========================
+   TEST / DEMO AMOUNT
+========================= */
+
+let demoAmount = Number(
+  localStorage.getItem("moraleDemoAmount")
+);
+
+if (!Number.isFinite(demoAmount)) {
+  demoAmount = 3000000;
+}
 
 
 /* =========================
@@ -69,7 +84,6 @@ const themeToggle =
 
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
-
     const isDark =
       document.body.classList.toggle("dark");
 
@@ -86,15 +100,17 @@ loadTheme();
 
 
 /* =========================
-   CURRENCY DISPLAY
+   CURRENCY
 ========================= */
 
 function getCurrency() {
-  return currencies[selectedCurrency] || currencies.USD;
+  return (
+    currencies[selectedCurrency] ||
+    currencies.USD
+  );
 }
 
 function updateCurrencyText() {
-
   const currency = getCurrency();
 
   const displayText =
@@ -130,12 +146,6 @@ function updateCurrencyText() {
 }
 
 
-/* =========================
-   SETTINGS CURRENCY
-   Currency can only be
-   changed here.
-========================= */
-
 const settingsCurrencySelect =
   document.getElementById(
     "settingsCurrencySelect"
@@ -159,6 +169,7 @@ if (settingsCurrencySelect) {
       );
 
       updateCurrencyText();
+      updateDemoAmount();
     }
   );
 }
@@ -167,16 +178,15 @@ updateCurrencyText();
 
 
 /* =========================
-   BALANCE
+   TEST / DEMO AMOUNT
 ========================= */
 
-function formatBalance() {
-
+function formatDemoAmount() {
   const currency = getCurrency();
 
   return (
     currency.symbol +
-    defaultBalance.toLocaleString(
+    demoAmount.toLocaleString(
       "en-US",
       {
         minimumFractionDigits: 2,
@@ -185,6 +195,98 @@ function formatBalance() {
     )
   );
 }
+
+
+function updateDemoAmount() {
+
+  const balanceDisplay =
+    document.getElementById(
+      "balanceDisplay"
+    );
+
+  const demoAmountText =
+    document.getElementById(
+      "demoAmountText"
+    );
+
+  if (demoAmountText) {
+    demoAmountText.textContent =
+      formatDemoAmount();
+  }
+
+  if (balanceDisplay) {
+
+    if (balanceHidden) {
+      balanceDisplay.textContent =
+        "••••••••";
+    } else {
+      balanceDisplay.textContent =
+        formatDemoAmount();
+    }
+  }
+}
+
+
+const editDemoAmount =
+  document.getElementById(
+    "editDemoAmount"
+  );
+
+if (editDemoAmount) {
+
+  editDemoAmount.addEventListener(
+    "click",
+    () => {
+
+      const enteredAmount =
+        prompt(
+          "Enter Test/Demo Amount:",
+          demoAmount.toFixed(2)
+        );
+
+      if (enteredAmount === null) {
+        return;
+      }
+
+      const cleanedAmount =
+        enteredAmount
+          .replace(/,/g, "")
+          .trim();
+
+      if (!cleanedAmount) {
+        return;
+      }
+
+      const newAmount =
+        Number(cleanedAmount);
+
+      if (
+        !Number.isFinite(newAmount) ||
+        newAmount < 0
+      ) {
+        alert(
+          "Please enter a valid Test/Demo Amount."
+        );
+        return;
+      }
+
+      demoAmount =
+        newAmount;
+
+      localStorage.setItem(
+        "moraleDemoAmount",
+        String(demoAmount)
+      );
+
+      updateDemoAmount();
+    }
+  );
+}
+
+
+/* =========================
+   BALANCE VISIBILITY
+========================= */
 
 function updateBalanceVisibility() {
 
@@ -198,7 +300,7 @@ function updateBalanceVisibility() {
       "toggleBalance"
     );
 
-  if (!balanceDisplay || !toggleBalance) {
+  if (!balanceDisplay) {
     return;
   }
 
@@ -207,28 +309,33 @@ function updateBalanceVisibility() {
     balanceDisplay.textContent =
       "••••••••";
 
-    toggleBalance.textContent =
-      "🙈";
+    if (toggleBalance) {
+      toggleBalance.textContent =
+        "🙈";
 
-    toggleBalance.setAttribute(
-      "aria-label",
-      "Show balance"
-    );
+      toggleBalance.setAttribute(
+        "aria-label",
+        "Show Test/Demo Amount"
+      );
+    }
 
   } else {
 
     balanceDisplay.textContent =
-      formatBalance();
+      formatDemoAmount();
 
-    toggleBalance.textContent =
-      "👁️";
+    if (toggleBalance) {
+      toggleBalance.textContent =
+        "👁️";
 
-    toggleBalance.setAttribute(
-      "aria-label",
-      "Hide balance"
-    );
+      toggleBalance.setAttribute(
+        "aria-label",
+        "Hide Test/Demo Amount"
+      );
+    }
   }
 }
+
 
 const toggleBalance =
   document.getElementById(
@@ -246,7 +353,7 @@ if (toggleBalance) {
 
       localStorage.setItem(
         "moraleBalanceHidden",
-        balanceHidden
+        String(balanceHidden)
       );
 
       updateBalanceVisibility();
@@ -255,6 +362,7 @@ if (toggleBalance) {
 }
 
 updateBalanceVisibility();
+updateDemoAmount();
 
 
 /* =========================
@@ -283,19 +391,9 @@ function updateName() {
       "profileNameText"
     );
 
-  const settingsAvatar =
-    document.getElementById(
-      "settingsAvatar"
-    );
-
   const dashboardAvatar =
     document.getElementById(
       "dashboardAvatar"
-    );
-
-  const settingsTopAvatar =
-    document.getElementById(
-      "settingsTopAvatar"
     );
 
   const firstLetter =
@@ -323,42 +421,241 @@ function updateName() {
       accountName;
   }
 
-  if (settingsAvatar) {
-    settingsAvatar.textContent =
-      firstLetter;
-  }
+  /*
+    Only use the first letter when
+    there is no saved profile picture.
+  */
 
-  if (dashboardAvatar) {
-    dashboardAvatar.textContent =
-      firstLetter;
-  }
+  if (
+    !localStorage.getItem(
+      "moraleProfilePicture"
+    )
+  ) {
 
-  if (settingsTopAvatar) {
-    settingsTopAvatar.textContent =
-      firstLetter;
+    if (dashboardAvatar) {
+      dashboardAvatar.textContent =
+        firstLetter;
+    }
+
+    const settingsTopAvatar =
+      document.getElementById(
+        "settingsTopAvatar"
+      );
+
+    if (settingsTopAvatar) {
+      settingsTopAvatar.textContent =
+        firstLetter;
+    }
   }
 }
 
 updateName();
 
+
+/* =========================
+   EDIT PROFILE NAME
+========================= */
+
+const editName =
+  document.getElementById(
+    "editName"
+  );
+
+if (editName) {
+
+  editName.addEventListener(
+    "click",
+    () => {
+
+      const newName =
+        prompt(
+          "Enter profile name:",
+          accountName
+        );
+
+      if (newName === null) {
+        return;
+      }
+
+      const cleanedName =
+        newName.trim();
+
+      if (!cleanedName) {
+        alert(
+          "Please enter a profile name."
+        );
+        return;
+      }
+
+      accountName =
+        cleanedName;
+
+      localStorage.setItem(
+        "moraleName",
+        accountName
+      );
+
+      updateName();
+    }
+  );
+}
+
+
+/* =========================
+   WEBSITE NAME
+========================= */
+
+function updateWebsiteName() {
+
+  const websiteNameElements =
+    document.querySelectorAll(
+      "#websiteName"
+    );
+
+  websiteNameElements.forEach(
+    (element) => {
+      element.textContent =
+        websiteName;
+    }
+  );
+
+
+  const websiteNameText =
+    document.getElementById(
+      "websiteNameText"
+    );
+
+  if (websiteNameText) {
+    websiteNameText.textContent =
+      websiteName;
+  }
+
+
+  const brandMark =
+    document.getElementById(
+      "brandMark"
+    );
+
+  if (brandMark) {
+    brandMark.textContent =
+      websiteName
+        .charAt(0)
+        .toUpperCase();
+  }
+
+
+  const title =
+    document.querySelector("title");
+
+  if (title) {
+
+    if (
+      window.location.pathname.includes(
+        "settings"
+      )
+    ) {
+
+      title.textContent =
+        websiteName +
+        " — Settings";
+
+    } else {
+
+      title.textContent =
+        websiteName +
+        " — Account";
+    }
+  }
+}
+
+updateWebsiteName();
+
+
+/* =========================
+   EDIT WEBSITE NAME
+========================= */
+
+const editWebsiteName =
+  document.getElementById(
+    "editWebsiteName"
+  );
+
+if (editWebsiteName) {
+
+  editWebsiteName.addEventListener(
+    "click",
+    () => {
+
+      const newWebsiteName =
+        prompt(
+          "Enter website name:",
+          websiteName
+        );
+
+      if (newWebsiteName === null) {
+        return;
+      }
+
+      const cleanedName =
+        newWebsiteName.trim();
+
+      if (!cleanedName) {
+        alert(
+          "Please enter a website name."
+        );
+        return;
+      }
+
+      websiteName =
+        cleanedName;
+
+      localStorage.setItem(
+        "moraleWebsiteName",
+        websiteName
+      );
+
+      updateWebsiteName();
+    }
+  );
+}
+
+
 /* =========================
    PROFILE PICTURE
 ========================= */
 
-var savedProfilePicture =
-  localStorage.getItem("moraleProfilePicture") || "";
+let savedProfilePicture =
+  localStorage.getItem(
+    "moraleProfilePicture"
+  ) || "";
+
+
+function createProfileImage(
+  src,
+  alt = "Profile picture"
+) {
+
+  const image =
+    document.createElement("img");
+
+  image.src = src;
+  image.alt = alt;
+
+  return image;
+}
 
 
 function updateProfilePicture() {
 
   const dashboardAvatar =
-    document.getElementById("dashboardAvatar");
-
-  const settingsAvatar =
-    document.getElementById("settingsAvatar");
+    document.getElementById(
+      "dashboardAvatar"
+    );
 
   const settingsTopAvatar =
-    document.getElementById("settingsTopAvatar");
+    document.getElementById(
+      "settingsTopAvatar"
+    );
 
   const settingsProfileImage =
     document.getElementById(
@@ -377,17 +674,10 @@ function updateProfilePicture() {
       dashboardAvatar.innerHTML =
         "";
 
-      const image =
-        document.createElement("img");
-
-      image.src =
-        savedProfilePicture;
-
-      image.alt =
-        "Profile picture";
-
       dashboardAvatar.appendChild(
-        image
+        createProfileImage(
+          savedProfilePicture
+        )
       );
     }
 
@@ -396,40 +686,34 @@ function updateProfilePicture() {
       settingsTopAvatar.innerHTML =
         "";
 
-      const image =
-        document.createElement("img");
-
-      image.src =
-        savedProfilePicture;
-
-      image.alt =
-        "Profile picture";
-
       settingsTopAvatar.appendChild(
-        image
+        createProfileImage(
+          savedProfilePicture
+        )
       );
     }
 
   } else {
 
-    if (!savedProfilePicture) {
+    const firstLetter =
+      accountName
+        .charAt(0)
+        .toUpperCase();
 
-  if (settingsAvatar) {
-    settingsAvatar.textContent =
-      firstLetter;
-  }
+    if (settingsProfileImage) {
+      settingsProfileImage.src =
+        "avatar.png";
+    }
 
-  if (dashboardAvatar) {
-    dashboardAvatar.textContent =
-      firstLetter;
-  }
+    if (dashboardAvatar) {
+      dashboardAvatar.textContent =
+        firstLetter;
+    }
 
-  if (settingsTopAvatar) {
-    settingsTopAvatar.textContent =
-      firstLetter;
-  }
-
-}
+    if (settingsTopAvatar) {
+      settingsTopAvatar.textContent =
+        firstLetter;
+    }
   }
 }
 
@@ -472,12 +756,23 @@ if (
         return;
       }
 
-      if (!file.type.startsWith("image/")) {
+      if (
+        !file.type.startsWith(
+          "image/"
+        )
+      ) {
+
+        alert(
+          "Please select an image."
+        );
+
         return;
       }
 
+
       const reader =
         new FileReader();
+
 
       reader.onload =
         function (event) {
@@ -491,188 +786,16 @@ if (
           );
 
           updateProfilePicture();
-
         };
 
-      reader.readAsDataURL(file);
 
+      reader.readAsDataURL(file);
     }
   );
 }
 
 
 updateProfilePicture();
-
-
-/* =========================
-   WEBSITE NAME
-========================= */
-
-let websiteName =
-  localStorage.getItem(
-    "moraleWebsiteName"
-  ) || "Morale";
-
-
-function updateWebsiteName() {
-
-  const websiteNameElements =
-    document.querySelectorAll(
-      "#websiteName"
-    );
-
-  const websiteNameText =
-    document.getElementById(
-      "websiteNameText"
-    );
-
-  const brandMark =
-    document.getElementById(
-      "brandMark"
-    );
-
-  const pageTitle =
-    document.querySelector("title");
-
-
-  websiteNameElements.forEach(
-    (element) => {
-
-      element.textContent =
-        websiteName;
-
-    }
-  );
-
-
-  if (websiteNameText) {
-
-    websiteNameText.textContent =
-      websiteName;
-
-  }
-
-
-  if (brandMark) {
-
-    brandMark.textContent =
-      websiteName
-        .charAt(0)
-        .toUpperCase();
-
-  }
-
-
-  if (pageTitle) {
-
-    const separator =
-      pageTitle.textContent.indexOf(" — ");
-
-    const pageSection =
-      separator !== -1
-        ? pageTitle.textContent.substring(
-            separator
-          )
-        : "";
-
-    pageTitle.textContent =
-      websiteName +
-      pageSection;
-
-  }
-}
-
-
-updateWebsiteName();
-
-
-const editWebsiteName =
-  document.getElementById(
-    "editWebsiteName"
-  );
-
-
-if (editWebsiteName) {
-
-  editWebsiteName.addEventListener(
-    "click",
-    () => {
-
-      const newWebsiteName =
-        prompt(
-          "Enter website name:",
-          websiteName
-        );
-
-      if (newWebsiteName === null) {
-        return;
-      }
-
-      const cleanedWebsiteName =
-        newWebsiteName.trim();
-
-      if (!cleanedWebsiteName) {
-        return;
-      }
-
-      websiteName =
-        cleanedWebsiteName;
-
-      localStorage.setItem(
-        "moraleWebsiteName",
-        websiteName
-      );
-
-      updateWebsiteName();
-
-    }
-  );
-}
-
-/* =========================
-   EDIT PROFILE NAME
-========================= */
-
-const editName =
-  document.getElementById(
-    "editName"
-  );
-
-if (editName) {
-
-  editName.addEventListener(
-    "click",
-    () => {
-
-      const newName =
-        prompt(
-          "Enter profile name:",
-          accountName
-        );
-
-      if (newName === null) {
-        return;
-      }
-
-      const cleanedName =
-        newName.trim();
-
-      if (!cleanedName) {
-        return;
-      }
-
-      accountName =
-        cleanedName;
-
-      localStorage.setItem(
-        "moraleName",
-        accountName
-      );
-
-      updateName();
-    }
-  );
-}
 
 
 /* =========================
@@ -774,6 +897,7 @@ if (
   supportButton.addEventListener(
     "click",
     () => {
+
       supportPanel.classList.add(
         "show"
       );
@@ -794,6 +918,7 @@ if (
   closeSupport.addEventListener(
     "click",
     () => {
+
       supportPanel.classList.remove(
         "show"
       );
@@ -845,6 +970,7 @@ if (
       chatMessages.scrollTop =
         chatMessages.scrollHeight;
 
+
       setTimeout(() => {
 
         const reply =
@@ -891,16 +1017,26 @@ document.addEventListener(
   }
 );
 
+
 /* =========================
    LOGIN PAGE NAVIGATION
-   ========================= */
+========================= */
 
-const loginForm = document.getElementById("loginForm");
+const loginForm =
+  document.getElementById(
+    "loginForm"
+  );
 
 if (loginForm) {
-  loginForm.addEventListener("submit", function (event) {
-    event.preventDefault();
 
-    window.location.href = "dashboard.html";
-  });
+  loginForm.addEventListener(
+    "submit",
+    function (event) {
+
+      event.preventDefault();
+
+      window.location.href =
+        "dashboard.html";
+    }
+  );
 }
