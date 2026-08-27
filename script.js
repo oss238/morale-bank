@@ -2,6 +2,11 @@
    MORALE UI SCRIPT
 ========================= */
 
+
+/* =========================
+   CURRENCY DATA
+========================= */
+
 const currencies = {
   USD: { symbol: "$", flag: "🇺🇸" },
   GBP: { symbol: "£", flag: "🇬🇧" },
@@ -63,35 +68,43 @@ function formatAmount() {
 
 function updateCurrencyText() {
   const currency = getCurrency();
-  const displayText =
-    `${currency.flag} ${selectedCurrency}`;
+  const displayText = `${currency.flag} ${selectedCurrency}`;
 
-  const elements = [
-    document.getElementById("accountCurrency"),
-    document.getElementById("accountCurrencyDetails"),
-    document.getElementById("settingsCurrency")
-  ];
+  const accountCurrency =
+    document.getElementById("accountCurrency");
 
-  elements.forEach(function (element) {
-    if (element) {
-      element.textContent = displayText;
-    }
-  });
+  const accountCurrencyDetails =
+    document.getElementById("accountCurrencyDetails");
+
+  const settingsCurrency =
+    document.getElementById("settingsCurrency");
+
+  if (accountCurrency) {
+    accountCurrency.textContent = displayText;
+  }
+
+  if (accountCurrencyDetails) {
+    accountCurrencyDetails.textContent = displayText;
+  }
+
+  if (settingsCurrency) {
+    settingsCurrency.textContent = displayText;
+  }
 }
 
 
 /* =========================
-   TEST AMOUNT / BALANCE
+   BALANCE / TEST AMOUNT
 ========================= */
 
 function updateAmount() {
-  const formattedAmount = formatAmount();
-
   const amountText =
     document.getElementById("testAmountText");
 
   const balanceDisplay =
     document.getElementById("balanceDisplay");
+
+  const formattedAmount = formatAmount();
 
   if (amountText) {
     amountText.textContent = formattedAmount;
@@ -106,16 +119,16 @@ function updateAmount() {
 }
 
 function setupAmountEditor() {
-  const editAmount =
+  const editButton =
     document.getElementById("editTestAmount") ||
     document.getElementById("editAmount");
 
-  if (!editAmount) {
+  if (!editButton) {
     return;
   }
 
-  editAmount.addEventListener("click", function () {
-    const enteredAmount = prompt(
+  editButton.addEventListener("click", function () {
+    const enteredAmount = window.prompt(
       "Enter Test Amount:",
       testAmount.toFixed(2)
     );
@@ -125,7 +138,9 @@ function setupAmountEditor() {
     }
 
     const cleanedAmount =
-      enteredAmount.replace(/,/g, "").trim();
+      enteredAmount
+        .replace(/,/g, "")
+        .trim();
 
     const newAmount = Number(cleanedAmount);
 
@@ -134,7 +149,7 @@ function setupAmountEditor() {
       !Number.isFinite(newAmount) ||
       newAmount < 0
     ) {
-      alert("Please enter a valid Test Amount.");
+      window.alert("Please enter a valid Test Amount.");
       return;
     }
 
@@ -146,6 +161,58 @@ function setupAmountEditor() {
     );
 
     updateAmount();
+  });
+}
+
+
+/* =========================
+   BALANCE SHOW / HIDE
+========================= */
+
+function updateBalanceVisibility() {
+  const balanceDisplay =
+    document.getElementById("balanceDisplay");
+
+  const toggleBalance =
+    document.getElementById("toggleBalance");
+
+  if (balanceDisplay) {
+    balanceDisplay.textContent =
+      balanceHidden
+        ? "••••••••"
+        : formatAmount();
+  }
+
+  if (toggleBalance) {
+    toggleBalance.textContent =
+      balanceHidden ? "🙈" : "👁️";
+
+    toggleBalance.setAttribute(
+      "aria-label",
+      balanceHidden
+        ? "Show balance"
+        : "Hide balance"
+    );
+  }
+}
+
+function setupBalanceVisibility() {
+  const toggleBalance =
+    document.getElementById("toggleBalance");
+
+  if (!toggleBalance) {
+    return;
+  }
+
+  toggleBalance.addEventListener("click", function () {
+    balanceHidden = !balanceHidden;
+
+    localStorage.setItem(
+      "moraleBalanceHidden",
+      String(balanceHidden)
+    );
+
+    updateBalanceVisibility();
   });
 }
 
@@ -180,7 +247,7 @@ function setupNameEditor() {
   }
 
   editName.addEventListener("click", function () {
-    const newName = prompt(
+    const newName = window.prompt(
       "Enter profile name:",
       accountName
     );
@@ -192,7 +259,7 @@ function setupNameEditor() {
     const cleanedName = newName.trim();
 
     if (!cleanedName) {
-      alert("Please enter a profile name.");
+      window.alert("Please enter a profile name.");
       return;
     }
 
@@ -254,7 +321,7 @@ function setupWebsiteEditor() {
   }
 
   editWebsiteName.addEventListener("click", function () {
-    const newWebsiteName = prompt(
+    const newWebsiteName = window.prompt(
       "Enter website name:",
       websiteName
     );
@@ -263,11 +330,10 @@ function setupWebsiteEditor() {
       return;
     }
 
-    const cleanedName =
-      newWebsiteName.trim();
+    const cleanedName = newWebsiteName.trim();
 
     if (!cleanedName) {
-      alert("Please enter a website name.");
+      window.alert("Please enter a website name.");
       return;
     }
 
@@ -284,55 +350,140 @@ function setupWebsiteEditor() {
 
 
 /* =========================
-   BALANCE VISIBILITY
+   CURRENCY SELECTOR
 ========================= */
 
-function updateBalanceVisibility() {
-  const balanceDisplay =
-    document.getElementById("balanceDisplay");
+function setupCurrency() {
+  const select =
+    document.getElementById("settingsCurrencySelect");
 
-  const toggleBalance =
-    document.getElementById("toggleBalance");
-
-  if (balanceDisplay) {
-    balanceDisplay.textContent =
-      balanceHidden
-        ? "••••••••"
-        : formatAmount();
-  }
-
-  if (toggleBalance) {
-    toggleBalance.textContent =
-      balanceHidden
-        ? "🙈"
-        : "👁️";
-
-    toggleBalance.setAttribute(
-      "aria-label",
-      balanceHidden
-        ? "Show balance"
-        : "Hide balance"
-    );
-  }
-}
-
-function setupBalanceVisibility() {
-  const toggleBalance =
-    document.getElementById("toggleBalance");
-
-  if (!toggleBalance) {
+  if (!select) {
     return;
   }
 
-  toggleBalance.addEventListener("click", function () {
-    balanceHidden = !balanceHidden;
+  select.value = selectedCurrency;
+
+  select.addEventListener("change", function () {
+    selectedCurrency = this.value;
 
     localStorage.setItem(
-      "moraleBalanceHidden",
-      String(balanceHidden)
+      "moraleCurrency",
+      selectedCurrency
     );
 
-    updateBalanceVisibility();
+    updateCurrencyText();
+    updateAmount();
+  });
+}
+
+
+/* =========================
+   PROFILE PICTURE
+========================= */
+
+function createProfileImage(src) {
+  const image =
+    document.createElement("img");
+
+  image.src = src;
+  image.alt = "Profile picture";
+
+  return image;
+}
+
+function updateAvatars() {
+  const savedPicture =
+    localStorage.getItem("moraleProfilePicture") || "";
+
+  const firstLetter =
+    accountName.charAt(0).toUpperCase();
+
+  const dashboardAvatar =
+    document.getElementById("dashboardAvatar");
+
+  const settingsTopAvatar =
+    document.getElementById("settingsTopAvatar");
+
+  if (savedPicture) {
+    if (dashboardAvatar) {
+      dashboardAvatar.innerHTML = "";
+      dashboardAvatar.appendChild(
+        createProfileImage(savedPicture)
+      );
+    }
+
+    if (settingsTopAvatar) {
+      settingsTopAvatar.innerHTML = "";
+      settingsTopAvatar.appendChild(
+        createProfileImage(savedPicture)
+      );
+    }
+  } else {
+    if (dashboardAvatar) {
+      dashboardAvatar.textContent = firstLetter;
+    }
+
+    if (settingsTopAvatar) {
+      settingsTopAvatar.textContent = firstLetter;
+    }
+  }
+}
+
+function updateProfilePicture() {
+  const savedPicture =
+    localStorage.getItem("moraleProfilePicture") || "";
+
+  const settingsProfileImage =
+    document.getElementById("settingsProfileImage");
+
+  if (settingsProfileImage) {
+    settingsProfileImage.src =
+      savedPicture || "avatar.png";
+  }
+
+  updateAvatars();
+}
+
+function setupProfilePicture() {
+  const changePicture =
+    document.getElementById("changePicture");
+
+  const input =
+    document.getElementById("profilePictureInput");
+
+  if (!changePicture || !input) {
+    return;
+  }
+
+  changePicture.addEventListener("click", function () {
+    input.click();
+  });
+
+  input.addEventListener("change", function () {
+    const file =
+      this.files && this.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      window.alert("Please select an image.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      localStorage.setItem(
+        "moraleProfilePicture",
+        event.target.result
+      );
+
+      updateProfilePicture();
+    };
+
+    reader.readAsDataURL(file);
   });
 }
 
@@ -390,142 +541,56 @@ function setupTheme() {
 
 
 /* =========================
-   CURRENCY SELECTOR
+   PASSWORD SHOW / HIDE
 ========================= */
 
-function setupCurrency() {
-  const select =
-    document.getElementById(
-      "settingsCurrencySelect"
-    );
+function setupPasswordToggle() {
+  const passwordInput =
+    document.getElementById("password");
 
-  if (!select) {
+  const togglePassword =
+    document.getElementById("togglePassword");
+
+  if (!passwordInput || !togglePassword) {
     return;
   }
 
-  select.value = selectedCurrency;
+  togglePassword.addEventListener("click", function () {
+    const showing =
+      passwordInput.type === "text";
 
-  select.addEventListener("change", function () {
-    selectedCurrency = this.value;
+    passwordInput.type =
+      showing ? "password" : "text";
 
-    localStorage.setItem(
-      "moraleCurrency",
-      selectedCurrency
+    togglePassword.textContent =
+      showing ? "👁️" : "🙈";
+
+    togglePassword.setAttribute(
+      "aria-label",
+      showing
+        ? "Show password"
+        : "Hide password"
     );
-
-    updateCurrencyText();
-    updateAmount();
   });
 }
 
 
 /* =========================
-   PROFILE PICTURE
+   LOGIN FORM
 ========================= */
 
-function createProfileImage(src) {
-  const image =
-    document.createElement("img");
+function setupLoginForm() {
+  const loginForm =
+    document.getElementById("loginForm");
 
-  image.src = src;
-  image.alt = "Profile picture";
-
-  return image;
-}
-
-function updateAvatars() {
-  const savedPicture =
-    localStorage.getItem(
-      "moraleProfilePicture"
-    ) || "";
-
-  const firstLetter =
-    accountName.charAt(0).toUpperCase();
-
-  const dashboardAvatar =
-    document.getElementById("dashboardAvatar");
-
-  const settingsTopAvatar =
-    document.getElementById("settingsTopAvatar");
-
-  [dashboardAvatar, settingsTopAvatar]
-    .forEach(function (avatar) {
-      if (!avatar) {
-        return;
-      }
-
-      if (savedPicture) {
-        avatar.innerHTML = "";
-        avatar.appendChild(
-          createProfileImage(savedPicture)
-        );
-      } else {
-        avatar.textContent = firstLetter;
-      }
-    });
-}
-
-function updateProfilePicture() {
-  const savedPicture =
-    localStorage.getItem(
-      "moraleProfilePicture"
-    ) || "";
-
-  const settingsProfileImage =
-    document.getElementById(
-      "settingsProfileImage"
-    );
-
-  if (settingsProfileImage) {
-    settingsProfileImage.src =
-      savedPicture || "avatar.png";
-  }
-
-  updateAvatars();
-}
-
-function setupProfilePicture() {
-  const changePicture =
-    document.getElementById("changePicture");
-
-  const input =
-    document.getElementById(
-      "profilePictureInput"
-    );
-
-  if (!changePicture || !input) {
+  if (!loginForm) {
     return;
   }
 
-  changePicture.addEventListener("click", function () {
-    input.click();
-  });
+  loginForm.addEventListener("submit", function (event) {
+    event.preventDefault();
 
-  input.addEventListener("change", function () {
-    const file =
-      this.files && this.files[0];
-
-    if (!file) {
-      return;
-    }
-
-    if (!file.type.startsWith("image/")) {
-      alert("Please select an image.");
-      return;
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = function (event) {
-      localStorage.setItem(
-        "moraleProfilePicture",
-        event.target.result
-      );
-
-      updateProfilePicture();
-    };
-
-    reader.readAsDataURL(file);
+    window.location.href = "dashboard.html";
   });
 }
 
@@ -596,6 +661,20 @@ function setupCustomerService() {
 
       chatMessages.scrollTop =
         chatMessages.scrollHeight;
+
+      window.setTimeout(function () {
+        const reply =
+          document.createElement("div");
+
+        reply.className = "message received";
+        reply.textContent =
+          "Thanks for your message. How can we help?";
+
+        chatMessages.appendChild(reply);
+
+        chatMessages.scrollTop =
+          chatMessages.scrollHeight;
+      }, 700);
     });
   }
 }
@@ -646,6 +725,9 @@ function initializeApp() {
 
   setupProfilePicture();
   updateProfilePicture();
+
+  setupPasswordToggle();
+  setupLoginForm();
 
   setupCustomerService();
   setupEscapeKey();
