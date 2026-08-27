@@ -39,17 +39,109 @@ let balanceHidden =
 
 
 /* =========================
-   TEST / DEMO AMOUNT
+   TEST / AMOUNT
 ========================= */
 
-let demoAmount = Number(
-  localStorage.getItem("moraleDemoAmount")
+let Amount = Number(
+  localStorage.getItem("moraleAmount")
 );
 
-if (!Number.isFinite(demoAmount)) {
-  demoAmount = 3000000;
+if (!Number.isFinite(Amount)) {
+  Amount = 3000000;
 }
 
+function formatAmount() {
+  const currency = getCurrency();
+
+  return (
+    currency.symbol +
+    demo.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    })
+  );
+}
+
+function updateAmount() {
+  const AmountText =
+    document.getElementById("demoAmountText")
+
+  const balanceDisplay =
+    document.getElementById("balanceDisplay");
+
+  if (demoAmountText) {
+    demoAmountText.textContent =
+      formatDemoAmount();
+  }
+
+  if (balanceDisplay) {
+    if (balanceHidden) {
+      balanceDisplay.textContent = "••••••••";
+    } else {
+      balanceDisplay.textContent =
+        formatDemoAmount();
+    }
+  }
+}
+
+function setupDemoAmountEditor() {
+  const editDemoAmount =
+    document.getElementById("editDemoAmount");
+
+  if (!editDemoAmount) {
+    return;
+  }
+
+  editDemoAmount.addEventListener("click", function () {
+
+    const enteredAmount = prompt(
+      "Enter Test/Demo Amount:",
+      demoAmount.toFixed(2)
+    );
+
+    if (enteredAmount === null) {
+      return;
+    }
+
+    const cleanedAmount =
+      enteredAmount
+        .replace(/,/g, "")
+        .trim();
+
+    const newAmount = Number(cleanedAmount);
+
+    if (
+      cleanedAmount === "" ||
+      !Number.isFinite(newAmount) ||
+      newAmount < 0
+    ) {
+      alert("Please enter a valid Test/Demo Amount.");
+      return;
+    }
+
+    demoAmount = newAmount;
+
+    localStorage.setItem(
+      "moraleDemoAmount",
+      String(demoAmount)
+    );
+
+    updateDemoAmount();
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+      setupDemoAmountEditor();
+      updateDemoAmount();
+    }
+  );
+} else {
+  setupDemoAmountEditor();
+  updateDemoAmount();
+}
 
 /* =========================
    THEME
@@ -178,111 +270,109 @@ updateCurrencyText();
 
 
 /* =========================
-   TEST / DEMO AMOUNT
+   AMOUNT
 ========================= */
 
-function formatDemoAmount() {
+let Amount = Number(
+  localStorage.getItem("moraleAmount")
+);
+
+if (!Number.isFinite(Amount)) {
+  Amount = 3000000;
+}
+
+function formatAmount() {
   const currency = getCurrency();
 
   return (
     currency.symbol +
-    demoAmount.toLocaleString(
-      "en-US",
-      {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }
-    )
+    Amount.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    })
   );
 }
 
-
-function updateDemoAmount() {
+function updateAmount() {
+  const AmountText =
+    document.getElementById("AmountText");
 
   const balanceDisplay =
-    document.getElementById(
-      "balanceDisplay"
-    );
+    document.getElementById("balanceDisplay");
 
-  const demoAmountText =
-    document.getElementById(
-      "demoAmountText"
-    );
-
-  if (demoAmountText) {
-    demoAmountText.textContent =
-      formatDemoAmount();
+  if (AmountText) {
+    AmountText.textContent =
+      formatAmount();
   }
 
   if (balanceDisplay) {
-
     if (balanceHidden) {
-      balanceDisplay.textContent =
-        "••••••••";
+      balanceDisplay.textContent = "••••••••";
     } else {
       balanceDisplay.textContent =
-        formatDemoAmount();
+        formatAmount();
     }
   }
 }
 
+function setupAmountEditor() {
+  const editAmount =
+    document.getElementById("editAmount");
 
-const editDemoAmount =
-  document.getElementById(
-    "editDemoAmount"
-  );
+  if (!editAmount) {
+    return;
+  }
 
-if (editDemoAmount) {
+  editAmount.addEventListener("click", function () {
 
-  editDemoAmount.addEventListener(
-    "click",
-    () => {
+    const enteredAmount = prompt(
+      "Enter Amount:",
+      demoAmount.toFixed(2)
+    );
 
-      const enteredAmount =
-        prompt(
-          "Enter Test/Demo Amount:",
-          demoAmount.toFixed(2)
-        );
-
-      if (enteredAmount === null) {
-        return;
-      }
-
-      const cleanedAmount =
-        enteredAmount
-          .replace(/,/g, "")
-          .trim();
-
-      if (!cleanedAmount) {
-        return;
-      }
-
-      const newAmount =
-        Number(cleanedAmount);
-
-      if (
-        !Number.isFinite(newAmount) ||
-        newAmount < 0
-      ) {
-        alert(
-          "Please enter a valid Test/Demo Amount."
-        );
-        return;
-      }
-
-      demoAmount =
-        newAmount;
-
-      localStorage.setItem(
-        "moraleDemoAmount",
-        String(demoAmount)
-      );
-
-      updateDemoAmount();
+    if (enteredAmount === null) {
+      return;
     }
-  );
+
+    const cleanedAmount =
+      enteredAmount
+        .replace(/,/g, "")
+        .trim();
+
+    const newAmount = Number(cleanedAmount);
+
+    if (
+      cleanedAmount === "" ||
+      !Number.isFinite(newAmount) ||
+      newAmount < 0
+    ) {
+      alert("Please enter a valid Amount.");
+      return;
+    }
+
+    Amount = newAmount;
+
+    localStorage.setItem(
+      "moraleAmount",
+      String(Amount)
+    );
+
+    updateAmount();
+  });
 }
 
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+      setupAmountEditor();
+      updateAmount();
+    }
+  );
+} else {
+  setupAmountEditor();
+  updateAmount();
+}
 
 /* =========================
    BALANCE VISIBILITY
